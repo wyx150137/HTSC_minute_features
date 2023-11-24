@@ -20,7 +20,7 @@ model 里面，所以 *PROCEED* 部分的特征，可以在 *RAW* 特征的基�
 
 1. 本文的数据基于 '1min' 的数据，数据来源为 [jointquant](https://www.joinquant.com/data)，已经下载并存储到本地
 由于一些地方可能会用到如 'trade_calender' 等数据，所以请在目录下放入 'config.py', 里面包括了绝大多数的配置信息，包括
-需要的账号密码，以及分钟文件的存储路径，多进程的进程数等，具体可以参考 'config.py' 文件内部的内容
+需要的账号密码，以及分钟文件的存储路径，多进程的进程数等，具体可以参考 'samplee_config.py' 文件内部的内容
 
 2. 后续的*PROCEED* 因子分析数据，基于 '1d' 进行测试，测试周期一般为 1d, 5d, 20d, 所使用的框架为 [rqfactor](https://www.ricequant.com/doc/rqfactor/manual.html#%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%9B%A0%E5%AD%90)
 具体的使用方法可以参考官方文档，这里不再赘述。
