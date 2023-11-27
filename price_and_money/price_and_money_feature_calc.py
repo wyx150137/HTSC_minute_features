@@ -23,7 +23,7 @@ def feature_1(date) -> None:
     save_file(Close / Open - 1, 'feature_1', date, config.raw_save_path + 'feature_1', '.pkl')
 
 
-def feature_2(date) -> pd.Series:
+def feature_2(date) -> None:
     '''
     :param date:
     :return: 收益率的方差
@@ -34,10 +34,11 @@ def feature_2(date) -> pd.Series:
     file.set_index(['code'], inplace = True)
 
     file['ret'] = file['close'] / file['pre_close'] - 1
-    return file.groupby('code')['ret'].std()
+    ret = file.groupby('code')['ret'].std()
 
+    save_file(ret, 'feature_2', date, config.raw_save_path + 'feature_2', '.pkl')
 
-def feature_3(date) -> pd.Series:
+def feature_3(date) -> None:
     '''
     :param date:
     :return: 收益率的偏度
@@ -49,10 +50,13 @@ def feature_3(date) -> pd.Series:
     file.set_index(['code'], inplace = True)
     file['ret'] = file['close'] / file['pre_close'] - 1
 
-    return file.groupby('code')['ret'].apply(lambda x: x.skew())
+    ret = file.groupby('code')['ret'].apply(lambda x: x.skew())
+
+    save_file(ret, 'feature_3', date, config.raw_save_path + 'feature_3', '.pkl')
 
 
-def feature_4(date) -> pd.Series:
+
+def feature_4(date) -> None:
     '''
     :param date:
     :return: 收益率的峰度
@@ -64,10 +68,12 @@ def feature_4(date) -> pd.Series:
     file.set_index(['code'], inplace = True)
     file['ret'] = file['close'] / file['pre_close'] - 1
 
-    return file.groupby('code')['ret'].apply(lambda x: x.kurt())
+    ret = file.groupby('code')['ret'].apply(lambda x: x.kurt())
+    save_file(ret, 'feature_4', date, config.raw_save_path + 'feature_4', '.pkl')
 
 
-def feature_5(date) -> pd.Series:
+
+def feature_5(date) -> None:
     '''
     :param date:
     :return: 典型价格差值
@@ -86,11 +92,13 @@ def feature_5(date) -> pd.Series:
     A = (df_open['high'] + df_open['low'] + df_open['close']) / 3
     B = (df_close['high'] + df_close['low'] + df_close['close']) / 3
 
-    return B - A
+    ret = B - A
+
+    save_file(ret, 'feature_5', date, config.raw_save_path + 'feature_5', '.pkl')
 
 
 
-def feature_6(date) -> pd.Series:
+def feature_6(date) -> None:
     '''
     :param date:
     :return: 股价变动趋势占比
@@ -113,10 +121,12 @@ def feature_6(date) -> pd.Series:
 
     down = file.groupby('code')['close_change'].sum()
 
-    return up / down
+    ret = up / down
+    save_file(ret, 'feature_6', date, config.raw_save_path + 'feature_6', '.pkl')
 
 
-def feature_7(date) -> pd.Series:
+
+def feature_7(date) -> None:
     '''
     :param date:
     :return: 日内最大回撤
@@ -131,9 +141,12 @@ def feature_7(date) -> pd.Series:
 
     max_drawdown = file.groupby('code')['drawdown'].max() - 1
 
-    return max_drawdown
+    ret = max_drawdown
 
-def feature_8(date) -> pd.Series:
+    save_file(ret, 'feature_7', date, config.raw_save_path + 'feature_7', '.pkl')
+
+
+def feature_8(date) -> None:
     '''
     :param date:
     :return: 日内最高价格出现时间 (如有多次，取第一次)
@@ -147,8 +160,11 @@ def feature_8(date) -> pd.Series:
     file = file[file['high'] == file['max_high']]
     file['time'] = file['time'].apply(lambda x: x.time())
     Max_time = file.groupby('code')['time'].min()
+    ret = Max_time
 
-def feature_9(date) -> pd.Series:
+    save_file(ret, 'feature_8', date, config.raw_save_path + 'feature_8', '.pkl')
+
+def feature_9(date) -> None:
     '''
     :param date:
     :return: 改进后日内涨幅
@@ -164,7 +180,9 @@ def feature_9(date) -> pd.Series:
     Open = file[file['time'].apply(lambda x: x.time()) == Begin_time]['close']
     Close = file[file['time'].apply(lambda x: x.time()) == End_time]['close']
 
-    return Close / Open
+    ret = Close / Open
+
+    save_file(ret, 'feature_9', date, config.raw_save_path + 'feature_9', '.pkl')
 
 
 
