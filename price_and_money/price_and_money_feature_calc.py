@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
-from toolkit import load_file
+from toolkit import load_file, save_file
 import config
 
-def alpha_1(date) -> pd.Series:
+def feature_1(date) -> None:
     '''
     :param date:
     :return: 日内收益率
@@ -18,9 +18,12 @@ def alpha_1(date) -> pd.Series:
     Open = file[file['time'].apply(lambda x: x.time()) == Begin_time]['open']
     Close = file[file['time'].apply(lambda x: x.time()) == End_time]['close']
 
-    return Close / Open - 1
+    # return Close / Open - 1
 
-def alpha_2(date) -> pd.Series:
+    save_file(Close / Open - 1, 'feature_1', date, config.raw_save_path + 'feature_1', '.pkl')
+
+
+def feature_2(date) -> pd.Series:
     '''
     :param date:
     :return: 收益率的方差
@@ -34,7 +37,7 @@ def alpha_2(date) -> pd.Series:
     return file.groupby('code')['ret'].std()
 
 
-def alpha_3(date) -> pd.Series:
+def feature_3(date) -> pd.Series:
     '''
     :param date:
     :return: 收益率的偏度
@@ -49,7 +52,7 @@ def alpha_3(date) -> pd.Series:
     return file.groupby('code')['ret'].apply(lambda x: x.skew())
 
 
-def alpha_4(date) -> pd.Series:
+def feature_4(date) -> pd.Series:
     '''
     :param date:
     :return: 收益率的峰度
@@ -64,7 +67,7 @@ def alpha_4(date) -> pd.Series:
     return file.groupby('code')['ret'].apply(lambda x: x.kurt())
 
 
-def alpha_5(date) -> pd.Series:
+def feature_5(date) -> pd.Series:
     '''
     :param date:
     :return: 典型价格差值
@@ -87,7 +90,7 @@ def alpha_5(date) -> pd.Series:
 
 
 
-def alpha_6(date) -> pd.Series:
+def feature_6(date) -> pd.Series:
     '''
     :param date:
     :return: 股价变动趋势占比
@@ -113,7 +116,7 @@ def alpha_6(date) -> pd.Series:
     return up / down
 
 
-def alpha_7(date) -> pd.Series:
+def feature_7(date) -> pd.Series:
     '''
     :param date:
     :return: 日内最大回撤
@@ -130,7 +133,40 @@ def alpha_7(date) -> pd.Series:
 
     return max_drawdown
 
+def feature_8(date) -> pd.Series:
+    '''
+    :param date:
+    :return: 日内最高价格出现时间 (如有多次，取第一次)
+    '''
+
+    file = load_file(date, config.my_file_path + 'minute_bar', '.pkl')
+    file = file[['code', 'high', 'time']]
+    file.set_index(['code'], inplace = True)
+
+    file['max_high'] = file.groupby('code')['high'].max()
+    file = file[file['high'] == file['max_high']]
+    file['time'] = file['time'].apply(lambda x: x.time())
+    Max_time = file.groupby('code')['time'].min()
+
+def feature_9(date) -> pd.Series:
+    '''
+    :param date:
+    :return: 改进后日内涨幅
+    '''
+
+    file = load_file(date, config.my_file_path + 'minute_bar', '.pkl')
+    file = file[['open', 'close', 'code', 'time']]
+    file.set_index(['code'], inplace = True)
+
+    Begin_time = pd.to_datetime('10:00:00').time()
+    End_time = pd.to_datetime('15:00:00').time()
+
+    Open = file[file['time'].apply(lambda x: x.time()) == Begin_time]['close']
+    Close = file[file['time'].apply(lambda x: x.time()) == End_time]['close']
+
+    return Close / Open
+
 
 
 if __name__ == '__main__':
-    alpha_7(pd.to_datetime("2023-11-24"))
+    feature_1(pd.to_datetime('2019-01-02'))
