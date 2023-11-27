@@ -1,11 +1,18 @@
-# 这是一个示例 Python 脚本。
+import config
+import toolkit
+from toolkit import extract_files
+from jqdatasdk import *
 
-# 按 Shift+F10 执行或将其替换为您的代码。
-# 按 双击 Shift 在所有地方搜索类、文件、工具窗口、操作和设置。
+def login():
+    name = config.joint_quant_config['name']
+    password = config.joint_quant_config['password']
+
+    auth(name, password)
+    print(get_query_count())
 
 
+def main():
 
 
-# 按装订区域中的绿色按钮以运行脚本。
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    main()
