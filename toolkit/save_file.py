@@ -12,8 +12,14 @@ def save_file(df, factor_name, time:datetime.datetime, path_name:str, file_forma
 
     df = df.reset_index(drop = False)
     df.rename(columns = {'index': 'code'}, inplace = True)
-    df.rename(columns = {0 : factor_name}, inplace = True)
     df['time'] = time
+
+    L = df.columns.tolist()
+    for i in range(0, len(L)):
+        if L[i] != 'code' and L[i] != 'time':
+            L[i] = factor_name
+
+    df.columns = L
 
     path_name = path_name + '\\' + str(time.year) + '\\' + str(time.month)
     if not os.path.exists(path_name):
