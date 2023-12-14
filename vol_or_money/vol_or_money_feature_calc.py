@@ -5,7 +5,7 @@ from toolkit import *
 import config
 
 def login():
-    auth("13263106478", "106478")
+    auth(config.joint_quant_config['name'], config.joint_quant_config['password'])
     
 def feature_20_27(date):
 
