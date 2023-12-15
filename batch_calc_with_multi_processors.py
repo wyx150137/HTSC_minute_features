@@ -83,6 +83,9 @@ def calc_trading_and_price(begin_date, end_date):
 if __name__ == '__main__':
     login()
     # calc_price_total_raw('2015-01-01', '2023-10-24')
-    calc_vol_or_money_part("2015-01-01", "2023-10-24")
-    calc_trading_and_price("2015-01-01", "2023-10-24")
-    calc_price_and_volume("2015-01-01", "2023-10-24")
+    # calc_vol_or_money_part("2015-01-01", "2023-10-24")
+    # calc_trading_and_price("2015-01-01", "2023-10-24")
+    # calc_price_and_volume("2015-01-01", "2023-10-24")
+    trade_cal = get_trade_days("2015-01-01", "2023-10-24")
+    with ProcessPoolExecutor(max_workers=config.max_workers) as executor:
+        executor.map(feature_20_27, trade_cal)

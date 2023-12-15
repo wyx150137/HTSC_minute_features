@@ -35,7 +35,9 @@ def feature_20_27(date):
 
     ret.drop('total_vol', axis = 1, inplace = True)
     ret = ret.reset_index(drop = True)
-    save_file(ret, 'feature_20_27', date, config.raw_save_path + 'feature_20_27', '.pkl')
+    # print(ret)
+    # save_file(ret, 'feature_20_27', date, config.raw_save_path + 'feature_20_27', '.pkl'
+    ret.to_pickle(r"{}/{}/{}/{}/{}.pkl".format(config.raw_save_path, "feature_20_27", date.year, date.month, date.strftime("%Y-%m-%d")))
 
 def feature_28(date):
     '''
@@ -90,6 +92,7 @@ def feature_29(date):
     save_file(ret, 'feature_29', date, config.raw_save_path + 'feature_29', '.pkl')
 
 if __name__ == '__main__':
-    feature_29(pd.to_datetime("2023-10-24"))
+    # feature_29(pd.to_datetime("2023-10-24"))
 
+    feature_20_27(pd.to_datetime("2018-01-02"))
 
