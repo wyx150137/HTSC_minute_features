@@ -47,3 +47,4 @@ def format_files(trade_cal: list[datetime.datetime], target_path: str, feature_n
             df.to_hdf(file_path, key = key_word)
 
     return None
+

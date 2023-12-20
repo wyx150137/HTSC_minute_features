@@ -88,4 +88,4 @@ if __name__ == '__main__':
     # calc_price_and_volume("2015-01-01", "2023-10-24")
     trade_cal = get_trade_days("2015-01-01", "2023-10-24")
     with ProcessPoolExecutor(max_workers=config.max_workers) as executor:
-        executor.map(feature_20_27, trade_cal)
+        executor.map(feature_8, trade_cal)

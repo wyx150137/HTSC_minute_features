@@ -154,13 +154,24 @@ def feature_8(date) -> None:
 
     file = load_file(date, config.my_file_path + 'minute_bar', '.pkl')
     file = file[['code', 'high', 'time']]
+    file.sort_values(['code', 'time'], ascending = True, inplace = True)
+    file = file.reset_index(drop = True)
     file.set_index(['code'], inplace = True)
 
     file['max_high'] = file.groupby('code')['high'].max()
     file = file[file['high'] == file['max_high']]
-    file['time'] = file['time'].apply(lambda x: x.time())
+
     Max_time = file.groupby('code')['time'].min()
-    ret = Max_time
+    LMT1 = pd.to_datetime('{} 13:00:00'.format(date.strftime("%Y-%m-%d")))
+    LMT2 = pd.to_datetime('{} 09:30:00'.format(date.strftime("%Y-%m-%d")))
+    Max_time = Max_time.apply(lambda x: (x - LMT1).total_seconds()+ 2 * 60 * 60 if x > LMT1  else (x - LMT2).total_seconds())
+    Max_time = Max_time.apply(lambda x: x / 60)
+
+    ret = pd.DataFrame()
+
+    code = Max_time.index.tolist()
+    ret['code'] = code
+    ret['feature_8'] = Max_time.values
 
     save_file(ret, 'feature_8', date, config.raw_save_path + 'feature_8', '.pkl')
 
@@ -187,4 +198,4 @@ def feature_9(date) -> None:
 
 
 if __name__ == '__main__':
-    feature_1(pd.to_datetime('2019-01-02'))
+    feature_8(pd.to_datetime('2018-01-02'))

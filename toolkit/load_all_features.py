@@ -17,11 +17,11 @@ def load_all_features(trade_cal, save_path):
     total_df = pd.DataFrame(columns=['code', 'time'])
 
     for item in all_features:
-        print(item, end = '\t')
+        print(item)
         df = extract_files(trade_cal, target_path = os.path.join(config.raw_save_path, item), file_format = '.pkl')
+        df['time'] = pd.to_datetime(df['time'])
         total_df = pd.merge(total_df, df, on = ['code', 'time'], how = 'outer')
-        print("done!")
-
+        print(total_df)
     total_df.to_pickle(save_path)
 
 

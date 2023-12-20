@@ -279,7 +279,7 @@ def feature_47(date):
     code = VR.index.tolist()
     ret['code'] = code
     ret['feature_47'] = VR.values
-    print(ret)
+    # print(ret)
 
     save_file(ret, 'feature_47', date, config.raw_save_path + 'feature_47', '.pkl')
 

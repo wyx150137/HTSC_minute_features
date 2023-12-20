@@ -11,7 +11,10 @@ def save_file(df, factor_name, time:datetime.datetime, path_name:str, file_forma
 
 
     df = df.reset_index(drop = False)
-    df.rename(columns = {'index': 'code'}, inplace = True)
+    if 'index' in df.columns and 'code' not in df.columns:
+        df.rename(columns = {'index': 'code'}, inplace = True)
+    else:
+        df.drop('index', axis = 1, inplace = True)
     df['time'] = time
 
     L = df.columns.tolist()

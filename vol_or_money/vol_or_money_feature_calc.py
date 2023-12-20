@@ -47,6 +47,8 @@ def feature_28(date):
 
     file = load_file(date, config.my_file_path + 'minute_bar', '.pkl')
     file = file[['volume', 'code', 'time']]
+    file.sort_values(['code', 'time'], ascending = True, inplace = True)
+    file = file.reset_index(drop = True)
 
     file['volume_5'] = file.groupby('code')['volume'].rolling(5).sum().values
     file['volume_10'] = file.groupby('code')['volume'].rolling(10).sum().values
@@ -60,6 +62,7 @@ def feature_28(date):
     ret['feature_28'] = (var_1 / var_2).values
 
     ret = ret.reset_index(drop=True)
+    print(ret)
     save_file(ret, 'feature_28', date, config.raw_save_path + 'feature_28', '.pkl')
 
 def feature_29(date):
@@ -94,5 +97,5 @@ def feature_29(date):
 if __name__ == '__main__':
     # feature_29(pd.to_datetime("2023-10-24"))
 
-    feature_20_27(pd.to_datetime("2018-01-02"))
+    feature_28(pd.to_datetime("2018-01-02"))
 

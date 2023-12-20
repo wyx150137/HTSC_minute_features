@@ -35,9 +35,12 @@ def extract_files(trade_cal: list[datetime.datetime], target_path: str, file_for
         else:
             df = pd.read_hdf(file_path, key = key_word)
 
+        if "time" not in df.columns:
+            df['time'] = date.strftime("%Y-%m-%d")
 
         df_L.append(df)
 
     ret_df = pd.concat(df_L).reset_index(drop = True)
+
     return ret_df
 

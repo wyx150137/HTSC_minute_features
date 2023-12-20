@@ -21,6 +21,8 @@ def feature_30(date):
     ret['code'] = code
     ret['feature_30'] = WVAD.values
 
+    print(ret)
+
     save_file(ret, 'feature_30', date, config.raw_save_path + 'feature_30', '.pkl')
 
 
@@ -94,9 +96,9 @@ def feature_33_35(date):
     ret['feature_34'] = kurt.values
     ret['feature_35'] = skew.values
 
-    save_file(ret, 'feature_33_35', date, config.raw_save_path + 'feature_33_35', '.pkl')
-
+    # save_file(ret, 'feature_33_35', date, config.raw_save_path + 'feature_33_35', '.pkl')
+    ret.to_pickle(r"{}/{}/{}/{}/{}.pkl".format(config.raw_save_path, "feature_33_35", date.year, date.month, date.strftime("%Y-%m-%d")))
 
 if __name__ == '__main__':
-    # feature_30(pd.to_datetime('2023-12-04'))
-    feature_33_35(pd.to_datetime('2023-12-04'))
+    feature_30(pd.to_datetime('2023-12-04'))
+    # feature_33_35(pd.to_datetime('2023-12-04'))
